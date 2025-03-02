@@ -1,21 +1,39 @@
-# chatbot-project
 # SDA-bootcamp-project
 
-Stage 2 - Basic Chatbot with FastAPI
+Stage 3 - Chatbot with Chat History
 
-A basic chatbot using streamlit and openai api. At this stage we move the call to openai to the backend using FastAPI
+A basic chatbot using Streamlit and FastAPI. At this stage, we will store the chat history on the local path and also log the corresponding chat ID, chat name and chat history file path in a database. In this case, every time we open our chatbot, it will automatically load the previous chat history.
 
-Store your `OPENAI_API_KEY` in `.env` file.
+In this stage I create a table called `chats` in the database using the following schema:
+```
+CREATE TABLE IF NOT EXISTS chats (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    file_path TEXT NOT null,
+    last_update TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
+```
 
+Please store your `OPENAI_API_KEY` and **Database Credentials** in `.env` file.
 
-Start the Backend:
-Before running the chatbot, start the FastAPI backend:
+Now the `.env` file should look like:
+```
+OPENAI_API_KEY=YOUR-OPENAI-API-KEY
+DB_NAME = YOUR-DB-NAME
+DB_USER = YOUR-DB-USER
+DB_PASSWORD = YOUR-DB-PASSWORD
+DB_HOST = YOUR-DB-HOST
+DB_PORT = YOUR-DB-PORT
+```
 
-uvicorn backend:app --reload
+Start the backend app first using:
 
-Start the Frontend
-Once the backend is running, launch the Streamlit app with:
+```
+uvicorn Backend:app --reload
+```
 
-streamlit run chatbot.py
-
-Note: Always start the backend first to ensure the chatbot functions properly.
+And then use 
+```
+streamlit run app.py
+```
+to run the Streamlit app. Make sure that you always start the backend first!
