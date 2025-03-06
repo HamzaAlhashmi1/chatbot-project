@@ -12,6 +12,11 @@
 
 ##
 .env
+chat_logs/
+/chroma.sqlite3
+/pdf_store
+
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
