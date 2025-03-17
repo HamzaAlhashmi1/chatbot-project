@@ -12,7 +12,7 @@
 
 ##
 .env
-chat_logs/
+/chat_logs
 /chroma.sqlite3
 /pdf_store
 
