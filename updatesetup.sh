@@ -101,7 +101,7 @@ After=network.target
 Type=simple
 User=$USER
 WorkingDirectory=$HOME_DIR/$REPO_NAME
-ExecStart=$HOME_DIR/miniconda3/envs/project/bin/uvicorn backend:app --reload --port 5000
+ExecStart=$HOME_DIR/miniconda3/envs/project/bin/uvicorn Backend:app --reload --port 5000
 Restart=always
 
 [Install]
@@ -117,7 +117,7 @@ After=network.target
 Type=simple
 User=$USER
 WorkingDirectory=$HOME_DIR/$REPO_NAME
-ExecStart=$HOME_DIR/miniconda3/envs/project/bin/streamlit run chatbot.py
+ExecStart=$HOME_DIR/miniconda3/envs/project/bin/streamlit run app.py
 Restart=always
 
 [Install]
