@@ -35,12 +35,12 @@ jobs:
           source venv/bin/activate
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.txt --target=".python_packages/lib/site-packages"
 
       # Optional: Add step to run tests here
 
       - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+        run: zip -r release.zip ./* .python_packages/*
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -48,7 +48,7 @@ jobs:
           name: python-app
           path: |
             release.zip
-            !venv/
+
 
   deploy:
     runs-on: ubuntu-latest
@@ -69,9 +69,13 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_A85681F6689C4315B5677D2BE5C8D41A }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8D7F9058BAB2465DA8F720DFEC3E4770 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_3C35FC0F1EB34E0E8900AE19A456EFDD }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F4CEAB06A1554B2FB0AC95869EFBC883 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_BF32BF4BCFDB4F99AE0608CEA3D5DD88 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_39722340F2C249749B97A7EEA13E8EC1 }}
+
+      - name: Set Application Settings
+        run: |
+          az functionapp config appsettings set --name backend-service-2030 --resource-group DemoVMSDA --settings "FUNCTIONS_WORKER_RUNTIME=python" "KEY_VAULT_NAME=mykeyvult2030" "APPINSIGHTS_INSTRUMENTATIONKEY=azurerm_application_insights.ai.instrumentation_key"
 
       - name: 'Deploy to Azure Functions'
         uses: Azure/functions-action@v1
@@ -80,4 +84,5 @@ jobs:
           app-name: 'backend-service-2030'
           slot-name: 'Production'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
-          
+          scm-do-build-during-deployment: true
+          enable-oryx-build: true
