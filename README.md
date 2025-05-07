@@ -62,4 +62,7 @@ Update your frontend code to load the Azure Function URL from Key Vault.
 
 Add the following to your .env file:
 
+env
+Copy
+Edit
 KEY_VAULT_NAME=your-keyvault-name
