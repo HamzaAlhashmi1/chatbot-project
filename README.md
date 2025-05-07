@@ -1,13 +1,16 @@
-Chatbot Project – Stage 8
-Migrating to CosmosDB (Serverless Backend with Azure Functions)
-In this stage, we'll move the chat history from Blob Storage files to CosmosDB.
+RAG Chatbot - Stage 8
+Serverless Backend with CosmosDB & Azure Functions
+This stage transitions the chatbot's backend from using Blob Storage for storing chat history to a fully serverless architecture using Azure CosmosDB and Azure Functions.
 
-Database Update
-If you're using PostgreSQL, you should remove the file_path column from the advanced_chats table. Alternatively, you can create a new table using the following structure:
+📦 Features
+Chat history is now stored in CosmosDB.
+Backend powered by Azure Functions.
+Secrets and configurations managed via Azure Key Vault.
+Frontend reads the function URL from Key Vault dynamically.
+Optional: PostgreSQL can be completely replaced for a full serverless setup.
+🛠 Database Migration
+If you're still using PostgreSQL, remove the file_path column from the advanced_chats table, or create a new table:
 
-sql
-Copy
-Edit
 CREATE TABLE IF NOT EXISTS advanced_chats_new (
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
@@ -17,66 +20,46 @@ CREATE TABLE IF NOT EXISTS advanced_chats_new (
     pdf_name TEXT,
     pdf_uuid TEXT
 );
-Note: The code in this branch is just a demo showing how to interact with CosmosDB. Right now, we’re only storing chat history there. However, you can also move all the metadata to CosmosDB and eliminate PostgreSQL entirely—making the whole system fully serverless.
 
-Connecting Azure Function to CosmosDB
-To connect your Azure Function to CosmosDB, store the following values in Azure Key Vault:
-
-PROJ-COSMOSDB-ENDPOINT
-
-PROJ-COSMOSDB-KEY
-
-PROJ-COSMOSDB-DATABASE
-
-PROJ-COSMOSDB-CONTAINER
-
-Don't forget to upload the local.settings.json file to Azure when deploying your Azure Function.
-
-Frontend Integration with Azure Function
-Since the frontend is still running on a VM or instance and needs to communicate with the Azure Function, you'll also need to store the Function URL in the Azure Key Vault.
-
-To allow the frontend to retrieve this URL:
-
-Update the frontend code so it can read the URL from Azure Key Vault.
-
-Add the following environment variable in the .env file on your instance:
-
-ini
-Copy
-Edit
-KEY_VAULT_NAME=your-keyvault-name
-Make sure the instance has the correct permissions to access secrets from the Key Vault.
-
-Secrets to Store in Azure Key Vault
-Ensure the following secrets are available in your Azure Key Vault:
-
+# PostgreSQL (Optional)
 PROJ-DB-NAME
-
 PROJ-DB-USER
-
 PROJ-DB-PASSWORD
-
 PROJ-DB-HOST
-
 PROJ-DB-PORT
 
+# OpenAI API
 PROJ-OPENAI-API-KEY
 
+# Azure Storage
 PROJ-AZURE-STORAGE-SAS-URL
-
 PROJ-AZURE-STORAGE-CONTAINER
 
+# ChromaDB
 PROJ-CHROMADB-HOST
-
 PROJ-CHROMADB-PORT
 
+# Base Endpoint
 PROJ-BASE-ENDPOINT-URL
 
-PROJ-COSMOSDB-ENDPOINT
+# CosmosDB (New)
+PROJ-COSMOSDB-ENDPOINT  
+PROJ-COSMOSDB-KEY  
+PROJ-COSMOSDB-DATABASE  
+PROJ-COSMOSDB-CONTAINER  
 
-PROJ-COSMOSDB-KEY
+⚙️ Azure Function Deployment
+Ensure the following values are included in your local.settings.json.
 
-PROJ-COSMOSDB-DATABASE
+Deploy your Azure Function to the cloud.
 
-PROJ-COSMOSDB-CONTAINER
+Upload the local.settings.json securely if needed.
 
+🌐 Frontend Setup
+Since the frontend is hosted on a VM or other environment, it needs access to Azure Key Vault to retrieve the Function URL.
+
+Update your frontend code to load the Azure Function URL from Key Vault.
+
+Add the following to your .env file:
+
+KEY_VAULT_NAME=your-keyvault-name
