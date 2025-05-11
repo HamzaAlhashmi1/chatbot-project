@@ -1,5 +1,5 @@
 locals {
-  source_image_id = "/subscriptions/2dc1be51-83fd-4e3d-83e6-83dd5e1f9e7e/resourceGroups/stage6.5tf/providers/Microsoft.Compute/galleries/myimages/images/chatbot-image/versions/1.0.0"
+  source_image_id = ""
 }
 
 resource "azurerm_linux_virtual_machine_scale_set" "web_vmss" {
